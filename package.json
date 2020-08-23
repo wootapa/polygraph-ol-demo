@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:gh": "ng build --prod --baseHref='https://wootapa.github.io/object-evaluator-ol-demo/'",
     "deploy": "ng deploy",
     "test": "ng test",
     "lint": "ng lint",
