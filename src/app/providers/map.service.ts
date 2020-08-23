@@ -55,7 +55,7 @@ export class MapService {
         // Define context for the layer we'll use
         const context: ILayerDef = {
             geomField: 'the_geom',
-            url: 'http://demo.geo-solutions.it/geoserver',
+            url: 'https://demo.geo-solutions.it/geoserver',
             layerName: 'topp:states',
             extent: [-126.13206836431365, 19.10784570899716, -65.5830401516955, 51.82396709579581] as Extent,
             projection: 'EPSG:4326',
