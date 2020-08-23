@@ -1,0 +1,30 @@
+<div class="w-buttons">
+    <div class="w-button" ngbDropdown #dropPoint="ngbDropdown">
+        <button class="btn btn-primary btn-sm" id="dropdownManual" ngbDropdownAnchor (focus)="dropPoint.open()">Point</button>
+        <div ngbDropdownMenu>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('Point', 'intersects')">Intersect</button>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('Point', 'disjoint')">Disjoint</button>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('Point', 'contains')">Contain</button>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperatorDistance('dwithin')">Distance Within</button>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperatorDistance('beyond')">Distance Beyond</button>
+        </div>
+    </div>
+    <div class="w-button" ngbDropdown #dropLine="ngbDropdown">
+        <button class="btn btn-primary btn-sm" id="dropdownManual" ngbDropdownAnchor (focus)="dropLine.open()">LineString</button>
+        <div ngbDropdownMenu>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('LineString', 'intersects')">Intersect</button>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('LineString', 'disjoint')">Disjoint</button>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('LineString', 'contains')">Contain</button>
+        </div>
+    </div>
+    <div class="w-button" ngbDropdown #dropPoly="ngbDropdown">
+        <button class="btn btn-primary btn-sm" id="dropdownManual" ngbDropdownAnchor (focus)="dropPoly.open()">Polygon</button>
+        <div ngbDropdownMenu>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('Polygon', 'intersects')">Intersect</button>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('Polygon', 'disjoint')">Disjoint</button>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('Polygon', 'contains')">Contain</button>
+            <button class="btn btn-sm" ngbDropdownItem (click)="addOperator('Polygon', 'within')">Within</button>
+        </div>
+    </div>
+    <button class="btn btn-warning btn-sm" (click)="clear()">Clear</button>
+</div>

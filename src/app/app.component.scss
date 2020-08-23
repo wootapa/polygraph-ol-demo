@@ -1,0 +1,15 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.navbar {
+    background-color: transparent;
+}
+
+.maps {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}

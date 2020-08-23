@@ -103,8 +103,13 @@
           "options": {
             "browserTarget": "waoe-demo:build"
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "waoe-demo"
 }
