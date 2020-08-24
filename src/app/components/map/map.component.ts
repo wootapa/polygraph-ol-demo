@@ -21,7 +21,7 @@ import { MapService } from '../../providers/map.service';
 })
 export class MapComponent implements AfterViewInit {
     @Input() type: any = 'WMS';
-    @ViewChild('title') titleEl: ElementRef; 
+    @ViewChild('title') titleEl: ElementRef;
     map: Map;
 
     constructor(
@@ -40,7 +40,7 @@ export class MapComponent implements AfterViewInit {
                     const source = new VectorSource();
                     const layer = new VectorLayer({
                         source: source,
-                        style: this.getStyle()
+                        style: this.getDrawStyle()
                     });
 
                     const draw = new Draw({
@@ -111,7 +111,7 @@ export class MapComponent implements AfterViewInit {
         });
     }
 
-    getStyle() {
+    getDrawStyle() {
         const blue = [0, 153, 255, 1];
         const white = [255, 255, 255, 1];
         const whiteTrans = [255, 255, 255, .3];
@@ -153,6 +153,7 @@ export class MapComponent implements AfterViewInit {
                 })
             })
         ];
+
         const defaultStyle = [
             new Style({
                 stroke: strokeBorder,

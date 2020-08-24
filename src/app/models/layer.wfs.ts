@@ -16,6 +16,18 @@ export class WLayerWFS extends WLayer {
     constructor(def: ILayerDef) {
         super('WFS', def);
 
+        this.olLayer = new VectorLayer({
+            source: new VectorSource(),
+            style: this.getStyle()
+        });
+        this.populate();
+    }
+
+    get source(): VectorSource {
+        return this.olLayer.getSource() as VectorSource;
+    }
+
+    private getStyle() {
         const polyStyle = new Style({
             stroke: new Stroke({
                 color: 'rgba(0, 0, 0, .5)',
@@ -26,7 +38,7 @@ export class WLayerWFS extends WLayer {
             }),
             text: new Text({
                 text: '',
-                font: '9pt Times New Roman',
+                font: '9pt Monospace',
                 stroke: new Stroke({
                     color: 'black',
                     width: 0.75
@@ -43,31 +55,23 @@ export class WLayerWFS extends WLayer {
             })
         });
 
-        this.olLayer = new VectorLayer({
-            source: new VectorSource(),
-            style: (feature: Feature) => {
-                const geom = feature.getGeometry();
+        return (feature: Feature) => {
+            const geom = feature.getGeometry();
 
-                if (!(geom instanceof Point)) {
-                    const persons = feature.get('PERSONS');
-                    const color = (persons > 2000000 && persons < 4000000)
-                        ? 'rgba(255, 77, 77, .7)'
-                        : persons > 4000000
-                            ? 'rgba(77, 77, 255, .7)'
-                            : 'rgba(77, 255, 77, .7)';
+            if (!(geom instanceof Point)) {
+                const persons = feature.get('PERSONS');
+                const color = (persons > 2000000 && persons < 4000000)
+                    ? 'rgba(255, 77, 77, .7)'
+                    : persons > 4000000
+                        ? 'rgba(77, 77, 255, .7)'
+                        : 'rgba(77, 255, 77, .7)';
 
-                    polyStyle.getFill().setColor(color);
-                    polyStyle.getText().setText(feature.get('STATE_ABBR'));
-                    return polyStyle;
-                }
-                return defaultStyle;
+                polyStyle.getFill().setColor(color);
+                polyStyle.getText().setText(feature.get('STATE_ABBR'));
+                return polyStyle;
             }
-        });
-        this.populate();
-    }
-
-    get source(): VectorSource {
-        return this.olLayer.getSource() as VectorSource;
+            return defaultStyle;
+        }
     }
 
     private async populate(oe: Evaluator = and()) {

@@ -1,11 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './components/map/map.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { MapService } from './providers/map.service';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
   declarations: [
@@ -15,9 +16,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   imports: [
     BrowserModule,
-    NgbModule
+    BrowserAnimationsModule,
+    BsDropdownModule.forRoot()
   ],
-  providers: [ MapService],
+  providers: [MapService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

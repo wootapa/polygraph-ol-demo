@@ -3,8 +3,6 @@ import { and, Evaluator, or } from '@wootapa/object-evaluator-ol';
 import { Feature } from 'ol';
 import GeometryType from 'ol/geom/GeometryType';
 import { IDoDrawResult, MapService } from 'src/app/providers/map.service';
-import { fromCircle } from 'ol/geom/Polygon';
-import Circle from 'ol/geom/Circle';
 
 @Component({
     selector: 'app-menu',
@@ -12,7 +10,6 @@ import Circle from 'ol/geom/Circle';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
-    isDrawing = false;
     private filters: Evaluator[] = [];
     private handles: IDoDrawResult[] = [];
     constructor(private mapService: MapService) { }
@@ -32,7 +29,6 @@ export class MenuComponent {
     addOperator(geometryType: string, operand, distance?: number) {
         const oe = and();
         this.filters.push(oe);
-        this.isDrawing = true;
 
         this.mapService.$doDraw.next({
             type: geometryType as GeometryType,
@@ -72,7 +68,6 @@ export class MenuComponent {
                     this.mapService.applyFilter(oeParent, isDone);
                 };
 
-                // Translate it
                 this.mapService.$doTranslate.next({
                     feature: drawResult.feature,
                     onDone: translateResult => {
@@ -81,7 +76,6 @@ export class MenuComponent {
                     }
                 });
                 evaluate(drawResult.feature);
-                this.isDrawing = false;
             }
         });
     }

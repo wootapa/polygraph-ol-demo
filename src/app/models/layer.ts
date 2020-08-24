@@ -17,5 +17,5 @@ export abstract class WLayer {
 
     constructor(public name: string, protected def: ILayerDef) { }
 
-    public abstract applyFilter(oe: Evaluator, isDone:boolean);
+    public abstract applyFilter(oe: Evaluator, isDone: boolean): void;
 }

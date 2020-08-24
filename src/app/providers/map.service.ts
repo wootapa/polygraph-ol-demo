@@ -46,13 +46,12 @@ export class MapService {
     public $doTranslate = new Subject<IDoTranslate>();
 
     constructor() {
-        // Setup projections
+        // Projections
         proj4.defs("EPSG:3857", "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs");
         proj4.defs("EPSG:4326", "+proj=longlat +datum=WGS84 +no_defs");
-        proj4.defs("EPSG:2285","+proj=lcc +lat_1=48.73333333333333 +lat_2=47.5 +lat_0=47 +lon_0=-120.8333333333333 +x_0=500000.0001016001 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=us-ft +no_defs");
         register(proj4);
 
-        // Define context for the layer we'll use
+        // Layer context
         const context: ILayerDef = {
             geomField: 'the_geom',
             url: 'https://demo.geo-solutions.it/geoserver',
@@ -63,21 +62,20 @@ export class MapService {
         };
         context.extent = transformExtent(context.extent, 'EPSG:4326', context.viewProjection)
 
-        // Construct the shared view
+        // Shared view
         this.view = new View({
             center: getCenter(context.extent),
             zoom: 3,
             projection: context.viewProjection
         });
 
-        // Make sure evaluators use the same projection
+        // Init evaluators default projection
         defaultProjection(get(context.viewProjection));
 
-        // Create layers
+        // Layers
         this.wmsLayer = new WLayerWMS(context);
         this.wfsLayer = new WLayerWFS(context);
 
-        // Tell subscribers we're ready
         this.$onReady.next()
     }
 
