@@ -38,7 +38,7 @@ export class WLayerWFS extends WLayer {
             }),
             text: new Text({
                 text: '',
-                font: '9pt Monospace',
+                font: 'light 10px Arial',
                 stroke: new Stroke({
                     color: 'black',
                     width: 0.75

@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Collection, Feature } from 'ol';
 import ScaleLine from 'ol/control/ScaleLine';
+import { getSize, getTopRight } from 'ol/extent';
+import LineString from 'ol/geom/LineString';
 import Point from 'ol/geom/Point';
-import { circular as circularPolygon } from 'ol/geom/Polygon';
+import Polygon, { circular as circularPolygon } from 'ol/geom/Polygon';
 import { defaults, DoubleClickZoom, Draw, Translate } from 'ol/interaction';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -116,42 +118,89 @@ export class MapComponent implements AfterViewInit {
         const white = [255, 255, 255, 1];
         const whiteTrans = [255, 255, 255, .3];
         const fill = new Fill({ color: whiteTrans });
-        const strokeBorder = new Stroke({ color: white, width: 7 });
-        const strokeDash = new Stroke({ color: blue, width: 1, lineDash: [3, 3] });
-        const stroke = new Stroke({ color: blue, width: 5 });
+        const strokeBorder = new Stroke({ color: white, width: 8 });
+        const stroke = new Stroke({ color: blue, width: 6 });
+        const distanceBorder = new Stroke({ color: white, width: 3, lineCap: "butt" });
+        const distanceStroke = new Stroke({ color: blue, width: 1 });
+        const distanceText = new Text({
+            font: 'light 7px Arial', placement: 'point',
+            fill: new Fill({ color: blue }),
+            stroke: new Stroke({ color: white, width: 3 })
+        });
 
         const pointStyle = [
             new Style({
-                stroke: strokeDash,
-                fill: fill,
-                geometry: (feature: Feature) => {
-                    const geom = feature.getGeometry();
-                    const distance = feature.get('distance');
-
-                    if (distance && geom instanceof Point) {
-                        const lonlat = toLonLat(geom.getCoordinates(), this.mapService.view.getProjection());
-                        const circle4326 = circularPolygon([lonlat[0], lonlat[1]], distance, 64);
-                        return circle4326.transform('EPSG:4326', this.mapService.view.getProjection());
-                    }
-                    return geom;
-                }
+                image: new CircleStyle({
+                    radius: 10,
+                    stroke: new Stroke({ color: white, width: 9 })
+                })
             }),
             new Style({
                 image: new CircleStyle({
                     radius: 10,
-                    stroke: strokeBorder
-                })
-            }),
-            new Style({
-                image: new CircleStyle({
-                    radius: 9,
                     stroke: stroke
                 }),
                 text: new Text({
                     text: '+',
-                    font: '9pt Monospace'
+                    font: 'light 7px Arial'
                 })
             })
+        ];
+
+        const pointDistanceStyle = [
+            ...pointStyle,
+
+            new Style({
+                stroke: distanceBorder,
+                fill: fill,
+                geometry: (feature: Feature) => {
+                    // Make circle
+                    const geom = feature.getGeometry() as Point;
+                    const distance = feature.get('distance');
+                    const lonlat = toLonLat(geom.getCoordinates(), this.mapService.view.getProjection());
+                    const circle4326 = circularPolygon([lonlat[0], lonlat[1]], distance, 64);
+                    const circle = circle4326.transform('EPSG:4326', this.mapService.view.getProjection()) as Polygon;
+                    feature.set('circle-geom', circle);
+
+                    // Make radiusline
+                    const [extentWidth, extentHeight] = getSize(circle.getExtent());
+                    const right = getTopRight(circle.getExtent());
+                    right[1] -= extentHeight / 2;
+                    const line = new LineString([geom.getFirstCoordinate(), right]);
+                    feature.set('radius-geom', line);
+
+                    return circle;
+                }
+            }),
+            new Style({
+                stroke: distanceStroke,
+                fill: fill,
+                geometry: (feature: Feature) => {
+                    return feature.get('circle-geom');
+                }
+            }),
+            new Style({
+                stroke: distanceBorder,
+                fill: fill,
+                geometry: (feature: Feature) => {
+                    return feature.get('radius-geom');
+                }
+            }),
+            new Style({
+                stroke: distanceStroke,
+                fill: fill,
+                geometry: (feature: Feature) => {
+                    return feature.get('radius-geom');
+                }
+            }),
+            new Style({
+                text: distanceText,
+
+                geometry: (feature: Feature) => {
+                    distanceText.setText(this.mapService.view.getResolution() < 8000 ? `${feature.get('distance')}m` : '...');
+                    return new Point((feature.get('radius-geom') as LineString).getFlatMidpoint());
+                }
+            }),
         ];
 
         const defaultStyle = [
@@ -166,6 +215,9 @@ export class MapComponent implements AfterViewInit {
 
         return (feature: Feature) => {
             if (feature.getGeometry() instanceof Point) {
+                if (feature.get('distance')) {
+                    return pointDistanceStyle;
+                }
                 return pointStyle;
             }
             return defaultStyle;
