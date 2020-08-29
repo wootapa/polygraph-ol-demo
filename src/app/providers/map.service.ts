@@ -23,16 +23,9 @@ export interface IDoDraw {
     onDone?(result: IDoDrawResult): void;
 }
 
-export interface IDoTranslateResult {
-    start(): void,
-    stop(): void,
-    $onTranslateEnd: Subject<Feature>
-    $onTranslating: Subject<Feature>
-}
-
-export interface IDoTranslate {
+export interface IOnTranslate {
     feature: Feature,
-    onDone?(result: IDoTranslateResult): void;
+    isEnd: boolean
 }
 
 @Injectable()
@@ -43,7 +36,7 @@ export class MapService {
 
     public $onReady = new ReplaySubject<void>(1);
     public $doDraw = new Subject<IDoDraw>();
-    public $doTranslate = new Subject<IDoTranslate>();
+    public $onTranslate = new Subject<IOnTranslate>();
 
     constructor() {
         // Projections
@@ -76,10 +69,10 @@ export class MapService {
         this.wmsLayer = new WLayerWMS(context);
         this.wfsLayer = new WLayerWFS(context);
 
-        this.$onReady.next()
+        this.$onReady.next();
     }
 
-    applyFilter(oe: Evaluator = and(), isDone = true) {
-        [this.wmsLayer, this.wfsLayer].forEach(layer => layer.applyFilter(oe, isDone));
+    applyFilter(oe: Evaluator = and(), isEnd = true) {
+        [this.wmsLayer, this.wfsLayer].forEach(layer => layer.applyFilter(oe, isEnd));
     }
 }

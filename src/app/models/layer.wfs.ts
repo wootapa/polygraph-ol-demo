@@ -92,7 +92,7 @@ export class WLayerWFS extends WLayer {
         this.source.addFeatures(features);
     }
 
-    public applyFilter(oe: Evaluator, isDone: boolean) {
+    public applyFilter(oe: Evaluator, isEnd: boolean) {
         oe.done();
         //oe.resetReport();
         this.source.forEachFeature(feature => {

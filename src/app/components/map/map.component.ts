@@ -61,37 +61,23 @@ export class MapComponent implements AfterViewInit {
                         }
                     });
 
-                    this.map.addInteraction(draw);
-                    this.map.addLayer(layer);
-                });
-
-                this.mapService.$doTranslate.subscribe(request => {
                     const translate = new Translate({
-                        features: new Collection([request.feature])
+                        layers: [layer]
                     });
 
-                    if (request.onDone) {
-                        const result = {
-                            start: () => {
-                                if (!this.map.getInteractions().getArray().includes(translate)) {
-                                    this.map.addInteraction(translate);
-                                }
-                            },
-                            stop: () => {
-                                if (this.map.getInteractions().getArray().includes(translate)) {
-                                    this.map.removeInteraction(translate);
-                                }
-                            },
-                            $onTranslateEnd: new Subject<Feature>(),
-                            $onTranslating: new Subject<Feature>()
-                        };
-                        request.onDone(result);
-                        translate.on("translateend", () => result.$onTranslateEnd.next(request.feature));
-                        translate.on("translating", () => result.$onTranslating.next(request.feature));
-                    }
+                    translate.on("translateend", (e) => this.mapService.$onTranslate.next({
+                        feature: e.features[0],
+                        isEnd: true
+                    }));
+                    translate.on("translating", (e) => this.mapService.$onTranslate.next({
+                        feature: e.features[0],
+                        isEnd: false
+                    }));
 
+                    this.map.addInteraction(draw);
                     this.map.addInteraction(translate);
-                })
+                    this.map.addLayer(layer);
+                });
             }
         });
     }

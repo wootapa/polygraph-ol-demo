@@ -22,8 +22,8 @@ export class WLayerWMS extends WLayer {
         })
     }
 
-    public applyFilter(oe: Evaluator, isDone: boolean) {
-        if (!isDone) {
+    public applyFilter(oe: Evaluator, isEnd: boolean) {
+        if (!isEnd) {
             return;
         }
 
