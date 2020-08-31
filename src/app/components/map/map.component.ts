@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Collection, Feature } from 'ol';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild, HostListener } from '@angular/core';
+import { Feature } from 'ol';
 import ScaleLine from 'ol/control/ScaleLine';
 import { getSize, getTopRight } from 'ol/extent';
 import LineString from 'ol/geom/LineString';
@@ -13,7 +13,6 @@ import { toLonLat } from 'ol/proj';
 import { OSM } from 'ol/source';
 import VectorSource from 'ol/source/Vector';
 import { Circle as CircleStyle, Fill, Stroke, Style, Text } from 'ol/style';
-import { Subject } from 'rxjs';
 import { MapService } from '../../providers/map.service';
 
 @Component({
@@ -82,6 +81,11 @@ export class MapComponent implements AfterViewInit {
         });
     }
 
+    @HostListener('window:resize', ['$event'])
+    onResize(event: any) {
+        this.map?.updateSize();
+    }
+
     createMap() {
         this.map = new Map({
             target: this.elRef.nativeElement,
@@ -97,6 +101,7 @@ export class MapComponent implements AfterViewInit {
             interactions: defaults().getArray().filter(ia => !(ia instanceof DoubleClickZoom)),
             view: this.mapService.view
         });
+        setTimeout(() => this.map.updateSize(), 1000);
     }
 
     getDrawStyle() {
@@ -149,7 +154,7 @@ export class MapComponent implements AfterViewInit {
                     feature.set('circle-geom', circle);
 
                     // Make radiusline
-                    const [extentWidth, extentHeight] = getSize(circle.getExtent());
+                    const [, extentHeight] = getSize(circle.getExtent());
                     const right = getTopRight(circle.getExtent());
                     right[1] -= extentHeight / 2;
                     const line = new LineString([geom.getFirstCoordinate(), right]);
