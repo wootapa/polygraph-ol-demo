@@ -47,7 +47,7 @@ export class MapService {
         // Layer context
         const context: ILayerDef = {
             geomField: 'the_geom',
-            url: 'http://gs-stable.geo-solutions.it/geoserver',
+            url: '//gs-stable.geo-solutions.it/geoserver',
             layerName: 'gs:us_states',
             extent: [-126.13206836431365, 19.10784570899716, -65.5830401516955, 51.82396709579581] as Extent,
             projection: 'EPSG:4326',
