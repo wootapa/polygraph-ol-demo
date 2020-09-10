@@ -91,6 +91,7 @@ export class MapComponent implements AfterViewInit {
             target: this.elRef.nativeElement,
             layers: [
                 new TileLayer({
+                    className: 'bw',
                     source: new OSM()
                 }),
                 this.type === 'WMS'

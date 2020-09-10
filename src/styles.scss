@@ -12,3 +12,7 @@ html, body {
 }
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+.bw {
+    filter: grayscale(90%);
+}
