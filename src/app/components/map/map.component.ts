@@ -92,7 +92,7 @@ export class MapComponent implements AfterViewInit {
             layers: [
                 new TileLayer({
                     className: 'bw',
-                    source: new OSM()
+                    source: this.mapService.osmSource
                 }),
                 this.type === 'WMS'
                     ? this.mapService.wmsLayer.olLayer

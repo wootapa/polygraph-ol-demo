@@ -11,6 +11,8 @@ import { register } from 'ol/proj/proj4';
 import proj4 from 'proj4';
 import { get, transformExtent } from 'ol/proj';
 import { ILayerDef } from '../models/layer';
+import TileLayer from 'ol/layer/Tile';
+import { OSM } from 'ol/source';
 
 
 export interface IDoDrawResult {
@@ -32,6 +34,7 @@ export interface IOnTranslate {
 export class MapService {
     public wmsLayer: WLayerWMS;
     public wfsLayer: WLayerWFS;
+    public osmSource = new OSM();
     public view: View;
 
     public $onReady = new ReplaySubject<void>(1);
@@ -47,8 +50,10 @@ export class MapService {
         // Layer context
         const context: ILayerDef = {
             geomField: 'the_geom',
-            url: '//gs-stable.geo-solutions.it/geoserver',
-            layerName: 'gs:us_states',
+            // url: '//gs-stable.geo-solutions.it/geoserver',
+            // layerName: 'gs:us_states',
+            url: '//demo.geo-solutions.it/geoserver',
+            layerName: 'topp:states',
             extent: [-126.13206836431365, 19.10784570899716, -65.5830401516955, 51.82396709579581] as Extent,
             projection: 'EPSG:4326',
             viewProjection: 'EPSG:3857'
