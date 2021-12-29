@@ -1,4 +1,4 @@
-import { and, Evaluator } from '@wootapa/object-evaluator-ol';
+import { and, Polygraph } from '@wootapa/polygraph-ol';
 import { Feature } from 'ol';
 import GeoJSON from 'ol/format/GeoJSON';
 import Point from 'ol/geom/Point';
@@ -74,7 +74,7 @@ export class WLayerWFS extends WLayer {
         }
     }
 
-    private async populate(oe: Evaluator = and()) {
+    private async populate(oe: Polygraph = and()) {
         const payload = `<GetFeature
                 xmlns="http://www.opengis.net/wfs" service="WFS" version="1.1.0" outputFormat="application/json"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.1.0/wfs.xsd">
@@ -92,7 +92,7 @@ export class WLayerWFS extends WLayer {
         this.source.addFeatures(features);
     }
 
-    public applyFilter(oe: Evaluator, isEnd: boolean) {
+    public applyFilter(oe: Polygraph, isEnd: boolean) {
         oe.done();
         //oe.resetReport();
         this.source.forEachFeature(feature => {

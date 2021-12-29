@@ -1,5 +1,5 @@
 import { WLayer, ILayerDef } from './layer';
-import { Evaluator } from '@wootapa/object-evaluator-ol';
+import { Polygraph } from '@wootapa/polygraph-ol';
 import { TileWMS } from 'ol/source';
 import TileLayer from 'ol/layer/Tile';
 
@@ -22,7 +22,7 @@ export class WLayerWMS extends WLayer {
         })
     }
 
-    public applyFilter(oe: Evaluator, isEnd: boolean) {
+    public applyFilter(oe: Polygraph, isEnd: boolean) {
         if (!isEnd) {
             return;
         }

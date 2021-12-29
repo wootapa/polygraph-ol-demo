@@ -13,7 +13,7 @@ MIT
 @angular/platform-browser
 MIT
 
-@wootapa/object-evaluator-ol
+@wootapa/polygraph-ol
 MIT
 MIT License
 

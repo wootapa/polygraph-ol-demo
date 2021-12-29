@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { and, Evaluator, or } from '@wootapa/object-evaluator-ol';
+import { and, Polygraph, or } from '@wootapa/polygraph-ol';
 import GeometryType from 'ol/geom/GeometryType';
 import { IDoDrawResult, MapService } from 'src/app/providers/map.service';
 
@@ -9,7 +9,7 @@ import { IDoDrawResult, MapService } from 'src/app/providers/map.service';
     styleUrls: ['./menu.component.scss']
 })
 export class MenuComponent {
-    private filters: Evaluator[] = [];
+    private filters: Polygraph[] = [];
     private drawHandles: IDoDrawResult[] = [];
 
     constructor(private mapService: MapService) {
@@ -17,7 +17,7 @@ export class MenuComponent {
     }
 
     apply(isEnd = true) {
-        const oeCombined = this.filters.reduce((oeParent, oe) => oeParent.addEvaluator(oe), or());
+        const oeCombined = this.filters.reduce((oeParent, oe) => oeParent.addPolygraph(oe), or());
         this.mapService.applyFilter(oeCombined, isEnd);
     }
 

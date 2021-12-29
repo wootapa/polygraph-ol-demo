@@ -1,5 +1,5 @@
 import Layer from 'ol/layer/Layer';
-import { Evaluator } from '@wootapa/object-evaluator-ol';
+import { Polygraph } from '@wootapa/polygraph-ol';
 import { Extent } from 'ol/extent';
 import { ProjectionLike } from 'ol/proj';
 
@@ -17,5 +17,5 @@ export abstract class WLayer {
 
     constructor(public name: string, protected def: ILayerDef) { }
 
-    public abstract applyFilter(oe: Evaluator, isDone: boolean): void;
+    public abstract applyFilter(oe: Polygraph, isDone: boolean): void;
 }

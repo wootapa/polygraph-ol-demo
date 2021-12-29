@@ -5,7 +5,7 @@ import { WLayerWFS } from '../models/layer.wfs';
 import View from 'ol/View';
 import { getCenter, Extent } from 'ol/extent';
 import GeometryType from 'ol/geom/GeometryType';
-import { Evaluator, defaultProjection, and } from '@wootapa/object-evaluator-ol';
+import { Polygraph, defaultProjection, and } from '@wootapa/polygraph-ol';
 import { Feature } from 'ol';
 import { register } from 'ol/proj/proj4';
 import proj4 from 'proj4';
@@ -77,7 +77,7 @@ export class MapService {
         this.$onReady.next();
     }
 
-    applyFilter(oe: Evaluator = and(), isEnd = true) {
+    applyFilter(oe: Polygraph = and(), isEnd = true) {
         [this.wmsLayer, this.wfsLayer].forEach(layer => layer.applyFilter(oe, isEnd));
     }
 }
