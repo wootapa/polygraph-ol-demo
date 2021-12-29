@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'waoe-demo';
+  title = 'polygraph-demo';
 
   constructor() {
     document.addEventListener('gesturestart', e => e.preventDefault());
