@@ -88,7 +88,7 @@ export class WLayerWFS extends WLayer {
             body: payload
         });
         const jsonFeatures = await response.json();
-        let features = formatJson.readFeatures(jsonFeatures);
+        let features = formatJson.readFeatures(jsonFeatures).filter(f => f.getGeometry() !== null);
         this.source.addFeatures(features);
     }
 

@@ -17,7 +17,7 @@ export class MenuComponent {
     }
 
     apply(isEnd = true) {
-        const oeCombined = this.filters.reduce((oeParent, oe) => oeParent.addPolygraph(oe), or());
+        const oeCombined = this.filters.reduce((oeParent, oe) => oeParent.addPolygraph(oe), Polygraph.or());
         this.mapService.applyFilter(oeCombined, isEnd);
     }
 

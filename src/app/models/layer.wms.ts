@@ -15,7 +15,8 @@ export class WLayerWMS extends WLayer {
                     'LAYERS': this.def.layerName,
                     'TILED': true,
                     'TRANSPARENT': true,
-                    'VERSION': '1.1.1'
+                    'VERSION': '1.1.1',
+                    'STYLES': 'polygon'
                 },
                 serverType: 'geoserver'
             })
