@@ -33,8 +33,7 @@ export class WLayerWMS extends WLayer {
         params.CQL_FILTER = oe.done().asOgcCql({
             geometryName: this.def.geomField,
             projection: this.def.projection,
-            decimals: 10,
-            useProjectionUnitForDistance: true
+            decimals: 10
         });
         source.updateParams(params);
     }
